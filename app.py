@@ -16,14 +16,18 @@ st.set_page_config(page_title="🌤️ Weather Dashboard", layout="wide")
 # Theme toggle
 dark_mode = st.toggle("🌙 Dark Mode", value=False)
 if dark_mode:
-    st.markdown("<style>body { background-color: #1e1e1e; color: white; }</style>", unsafe_allow_html=True)
+    st.markdown("""
+        <style>
+        body { background-color: #1e1e1e; color: white; }
+        .stApp { background-color: #1e1e1e; color: white; }
+        </style>
+    """, unsafe_allow_html=True)
 
 # Title
 st.title("🌤️ Advanced Weather Dashboard")
 
 # API key
 API_KEY = st.secrets["OPENWEATHER_API_KEY"]
-  # Replace with your OpenWeather key
 
 # Input
 city_input = st.text_input("Enter cities (comma-separated):", "Bangalore, Mysore, Mangalore")
@@ -95,16 +99,18 @@ for city in cities:
                 df_forecast["Wind"] = df_forecast["wind"].apply(lambda x: x["speed"])
                 df_forecast["Humidity"] = df_forecast["main"].apply(lambda x: x["humidity"])
 
-                st.write("### 📈 Forecast (5-Day)")
+                st.write("### 📊 Forecast (5-Day)")
                 fig = px.line(df_forecast, x="dt_txt", y="Temp", title="Temperature Forecast")
                 st.plotly_chart(fig, use_container_width=True)
                 fig2 = px.line(df_forecast, x="dt_txt", y="Wind", title="Wind Speed Forecast")
                 st.plotly_chart(fig2, use_container_width=True)
+
     except Exception as e:
         st.warning(f"Error parsing weather for {city}: {e}")
 
 if weather_data:
     df = pd.DataFrame(weather_data)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     st.subheader("📊 Weather Summary Charts")
     col1, col2 = st.columns(2)
@@ -128,23 +134,28 @@ if weather_data:
     st.subheader("📄 Full Weather Data")
     st.dataframe(df, use_container_width=True)
 
+    # CSV Export
     csv = df.to_csv(index=False).encode("utf-8")
-    st.download_button("⬇️ Download CSV", csv, "weather_data.csv", "text/csv")
+    st.download_button("⬇️ Download CSV", csv, f"weather_data_{timestamp}.csv", "text/csv")
 
+    # Excel Export
     excel_buf = BytesIO()
     df.to_excel(excel_buf, index=False, sheet_name="Weather")
-    st.download_button("⬇️ Download Excel", excel_buf.getvalue(), "weather_data.xlsx", "application/vnd.ms-excel")
+    st.download_button("⬇️ Download Excel", excel_buf.getvalue(), f"weather_data_{timestamp}.xlsx", "application/vnd.ms-excel")
 
-    # PDF export
+    # PDF Export
     pdf = FPDF()
     pdf.add_page()
+    pdf.set_font("Arial", 'B', 16)
+    pdf.cell(200, 10, txt="🌤️ Weather Report", ln=True, align="C")
     pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Weather Report", ln=True, align="C")
+    pdf.ln(10)
     for i, row in df.iterrows():
         pdf.cell(200, 10, txt=str(row.to_dict()), ln=True)
     pdf_buf = BytesIO()
     pdf.output(pdf_buf)
-    st.download_button("⬇️ Download PDF", data=pdf_buf.getvalue(), file_name="weather_report.pdf", mime="application/pdf")
+    pdf_buf.seek(0)
+    st.download_button("⬇️ Download PDF", data=pdf_buf, file_name=f"weather_report_{timestamp}.pdf", mime="application/pdf")
 
 else:
     st.info("Enter valid city names to view data.")
