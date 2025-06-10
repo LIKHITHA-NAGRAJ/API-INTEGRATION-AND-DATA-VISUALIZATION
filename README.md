@@ -1,6 +1,13 @@
 # weather_dashboard
 # 🌤️ Streamlit Weather Dashboard
 
+COMPANY : CODTECH IT SOLUTIONS
+NAME : LIKHITHA N
+INTERN ID : CT06DL625
+DOMAIN : PYTHON PROGRAMMING
+DURATION : 6 WEEKS
+MENTOR : NEELA SANTOSH
+
 A modern, responsive weather dashboard built with **Streamlit**, powered by **OpenWeatherMap API**, offering real-time and forecast weather data visualization for multiple cities.
 
 ![Dashboard Screenshot](assets/dashboard_screenshot.png)
