@@ -19,7 +19,6 @@ MENTOR : NEELA SANTOSH
 ## 📘 Project Description
 
 The **Advanced Weather Dashboard** is a comprehensive, interactive, and visually engaging weather data monitoring application developed using **Python** and 
-<br>
 **Streamlit**. It enables users to fetch real-time and forecasted weather data for multiple cities simultaneously, visualize this data through dynamic charts and maps, and download comprehensive reports in CSV, Excel, and PDF formats. The application is ideal for users who want a one-stop solution for monitoring and analyzing weather conditions across different regions quickly and efficiently.
 
 The project integrates several APIs, data processing libraries, and visualization tools to deliver a professional-grade dashboard experience. With support for data export and visual summary, it serves both analytical and reporting needs. Its lightweight and responsive design makes it deployable on local systems or remote servers using platforms like Streamlit Cloud, Heroku, or AWS.
